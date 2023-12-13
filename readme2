@@ -1,0 +1,49 @@
+PUNET1106项目，继承自PUNET1023项目，作为论文基准项目。
+使用 VCTK 的数据集, voicebank+demand 数据库
+train_epoch_time_loss使用时域损失，train_eopch_STFT_loss 使用时频域损失。
+
+PUNET2D1106_base以PUNET1023的模型为基准。
+train、val、test数据集由VCTK提供
+
+DataGenTrain1116 训练、验证集数据生成，采用连续的文件，文件和文件间的数据相连接，不舍弃尾部数据。
+DataGenTest1023 测试集数据生成，采用单个的文件，抛弃尾部不足一帧的数据
+DataGenTest1116 测试集数据生成，采用单个的文件，抛弃尾部不足一帧的数据，
+
+
+11.16 val
+loss*1e4: 81.9, sisdr: 15.87, stoi%: 89.50, pesq: 3.09
+
+11.16 test
+loss*1e4: 60.9, sisdr: 18.90, stoi%: 93.51, pesq: 3.63
+
+test_epoch1116 11.17 metricsSE0809 pesq 算法调整，ref和deg交换
+test
+loss*1e4: 60.9, sisdr: 18.90, stoi%: 93.51, pesq: 3.30
+
+test_Mixture1116 这个算法与matlab算法输出结果一致，即mixture性能指标
+loss*1e4: 235.9, sisdr: 08.47, stoi%: 92.14, pesq: 1.97
+
+目标性能指标
+PESQ STOI CSIG CBAK CVOL
+3.06 0.95 4.40 3.49 3.75
+
+
+PUNETVCTK
+loss*1e4: 235.9, sisdr: 08.47, stoi%: 92.14, pesq: 1.97
+
+PUNETVCTK2 加入OLA、TFloss，依然有帧间爆音出现
+loss*1e4: 69.2, sisdr: 19.11, stoi%: 93.68, pesq: 2.61
+
+PUNETVCTK3 不跨文件读取，每帧加入hamming窗损失计算 (没跑完)
+loss*1e4: 57.2, sisdr: 19.43, stoi%: 93.69, pesq: 2.49
+loss*1e4: 29.8, sisdr: 19.64, stoi%: 94.18, pesq: 2.58 (加ham窗)
+
+PUNETVCTK4 不跨文件读取，每个文件只读取前1s左右，使用stft loss
+loss*1e4: 683.1, sisdr: 18.81, stoi%: 94.04, pesq: 2.52
+
+PUNETVCTK5 不跨文件读取。每次训练1个batch，包含全部数据，给每个文件尾部补0，直至满足一帧的长度。使用stft loss
+loss*1e4: 31.6, sisdr: 20.22, stoi%: 94.95, pesq: 2.90
+CSIG 4.1424, CBAK 3.5618, COVL 3.5319, PESQ 2.8988, STOI 0.9496
+11.23
+loss*1e4: 31.7, sisdr: 20.29, stoi%: 95.17, pesq: 2.97
+CSIG 4.2709, CBAK 3.6103, COVL 3.6410, PESQ 2.9755, STOI 0.9518
